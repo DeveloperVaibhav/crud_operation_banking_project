@@ -1,6 +1,7 @@
 package com.springboot.crud_operation_banking_project.repository;
 
 import com.springboot.crud_operation_banking_project.model.Account;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class AccountRepository {
 
     @Autowired
