@@ -1,21 +1,28 @@
 package com.springboot.crud_operation_banking_project.controller;
 
 import com.springboot.crud_operation_banking_project.model.Account;
+import com.springboot.crud_operation_banking_project.repository.AccountRepository;
 import com.springboot.crud_operation_banking_project.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/accounts")
-@RequiredArgsConstructor
+@RequestMapping("/v1/api")
 public class AccountController {
 
-    private final AccountService accountService;
+    private AccountService accountService;
 
-    @GetMapping
+    @Autowired
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts());
     }

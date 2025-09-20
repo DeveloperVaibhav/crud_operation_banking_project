@@ -3,42 +3,53 @@ package com.springboot.crud_operation_banking_project.service;
 import com.springboot.crud_operation_banking_project.model.Account;
 import com.springboot.crud_operation_banking_project.repository.AccountRepository;
 import com.springboot.crud_operation_banking_project.exception.ResourceNotFoundException;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
-@RequiredArgsConstructor
 public class AccountService {
 
+    private AccountRepository accountRepository;
+
     @Autowired
-    private final AccountRepository accountRepository;
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     public List<Account> getAllAccounts() {
+        log.info("Fetching all accounts");
         return accountRepository.findAll();
     }
 
     public Account getAccountById(Long id) {
+        log.info("Fetching account with ID: {}", id);
         return accountRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found with ID: " + id));
     }
 
     public void createAccount(Account account) {
+        log.info("Creating account: {}", account);
         accountRepository.save(account);
     }
 
     public void updateAccount(Long id, Account account) {
-        Account existing = getAccountById(id);
-        existing.setAccountHolderName(account.getAccountHolderName());
-        existing.setAccountType(account.getAccountType());
-        existing.setBalance(account.getBalance());
-        accountRepository.update(existing);
+        log.info("Updating account with ID: {}", id);
+        Account existingUser = getAccountById(id);
+        log.info("Existing user: {}", existingUser);
+        existingUser.setAccountHolderName(account.getAccountHolderName());
+        existingUser.setAccountType(account.getAccountType());
+        existingUser.setBalance(account.getBalance());
+        accountRepository.update(existingUser);
     }
 
     public void deleteAccount(Long id) {
-        getAccountById(id);
+        log.info("Deleting account with ID: {}", id);
+        Account existingUser = getAccountById(id);
+        log.info("Existing user: {}", existingUser);
         accountRepository.deleteById(id);
     }
 }
